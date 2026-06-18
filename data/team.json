@@ -1,0 +1,74 @@
+{
+  "execom": [
+    {
+      "id": 1,
+      "name": "Dr. Rajesh Kumar",
+      "position": "Chairperson",
+      "tenure": "2024-2025",
+      "role": "Leadership",
+      "bio": "Dr. Kumar leads SIGHT initiatives with over 15 years of experience in sustainable technology.",
+      "image": "/images/team/rajesh.jpg",
+      "linkedin": "https://linkedin.com/in/rajeshkumar",
+      "email": "rajesh@ieee.org"
+    },
+    {
+      "id": 2,
+      "name": "Priya Nair",
+      "position": "Vice Chairperson",
+      "tenure": "2024-2025",
+      "role": "Operations",
+      "bio": "Priya oversees project operations focusing on community engagement and impact measurement.",
+      "image": "/images/team/priya.jpg",
+      "linkedin": "https://linkedin.com/in priya",
+      "email": "priya@ieee.org"
+    },
+    {
+      "id": 3,
+      "name": "Arun Thomas",
+      "position": "Secretary",
+      "tenure": "2024-2025",
+      "role": "Administration",
+      "bio": "Arun manages communications and documentation for all SIGHT activities.",
+      "image": "/images/team/arun.jpg",
+      "linkedin": "https://linkedin.com/in/arunthomas",
+      "email": "arun@ieee.org"
+    }
+  ],
+  "members": [
+    {
+      "id": 4,
+      "name": "Meera Suresh",
+      "role": "Technical Lead",
+      "bio": "IoT and sensor networks specialist driving our environmental monitoring projects.",
+      "image": "/images/team/meera.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Vineeth Menon",
+      "role": "Project Coordinator",
+      "bio": "Coordinates field operations and volunteer management across Kerala.",
+      "image": "/images/team/vineeth.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Anjali Rajan",
+      "role": "Outreach Lead",
+      "bio": "Builds partnerships with NGOs and government bodies for community projects.",
+      "image": "/images/team/anjali.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Siddharth P",
+      "role": "Data Analyst",
+      "bio": "Analyzes project impact and develops metrics dashboards for stakeholders.",
+      "image": "/images/team/siddharth.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Lakshmi Krishnan",
+      "role": "Content Lead",
+      "bio": "Creates compelling stories and documentation for Field Notes and communications.",
+      "image": "/images/team/lakshmi.jpg"
+    }
+  ]
+}

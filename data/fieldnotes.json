@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Bringing Solar Power to remote tribal settlements",
+    "date": "2024-06-01",
+    "author": "Meera Suresh",
+    "category": "Project Update",
+    "excerpt": "How we installed a community-owned solar microgrid in Wayanad's most remote village.",
+    "content": "The project began with a simple question from the village headman: 'Can we have electricity that we own?' That question led us on a 6-month journey...",
+    "image": "/images/fieldnotes/solar-install.jpg",
+    "tags": ["solar", "community", "wayanad"],
+    "featured": true
+  },
+  {
+    "id": 2,
+    "title": "Lessons from deploying sensors in monsoon",
+    "date": "2024-05-15",
+    "author": "Vineeth Menon",
+    "category": "Technical",
+    "excerpt": "What we learned about hardware resilience from our water monitoring project.",
+    "content": "The Idukki district receives over 3000mm of rainfall annually. Our sensors had to survive conditions that would destroy most commercial equipment...",
+    "image": "/images/fieldnotes/sensor-deployment.jpg",
+    "tags": ["iot", "hardware", "monsoon"],
+    "featured": true
+  },
+  {
+    "id": 3,
+    "title": "When farmers became our teachers",
+    "date": "2024-04-20",
+    "author": "Anjali Rajan",
+    "category": "Community",
+    "excerpt": "How traditional farming knowledge improved our AgriTech platform.",
+    "content": "We went to Palakkad to teach farmers about technology. Instead, we learned more about soil, seasons, and survival than any textbook could teach...",
+    "image": "/images/fieldnotes/farmers.jpg",
+    "tags": ["agritech", "community", "palakkad"],
+    "featured": false
+  },
+  {
+    "id": 4,
+    "title": "Building trust in rural healthcare tech",
+    "date": "2024-03-25",
+    "author": "Lakshmi Krishnan",
+    "category": "Impact Story",
+    "excerpt": "How a small health monitoring kiosk changed community perceptions about technology.",
+    "content": "The first week, nobody used the kiosk. By the second month, there was a queue every morning...",
+    "image": "/images/fieldnotes/health-kiosk.jpg",
+    "tags": ["healthcare", "rural", "trust"],
+    "featured": false
+  }
+]

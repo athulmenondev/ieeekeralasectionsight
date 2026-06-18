@@ -1,0 +1,27 @@
+{
+  "title": "IEEE Kerala Section SIGHT",
+  "description": "Promoting humanitarian technology initiatives across Kerala through sustainable engineering and community engagement.",
+  "nav": [
+    { "label": "Home", "path": "/" },
+    { "label": "About", "path": "/about" },
+    { "label": "Projects", "path": "/projects" },
+    { "label": "Events", "path": "/events" },
+    { "label": "Field Notes", "path": "/field-notes" }
+  ],
+  "social": [
+    { "platform": "LinkedIn", "url": "https://linkedin.com", "icon": "linkedin" },
+    { "platform": "Twitter", "url": "https://twitter.com", "icon": "twitter" },
+    { "platform": "GitHub", "url": "https://github.com", "icon": "github" }
+  ],
+  "footer": {
+    "copyright": "2024 IEEE Kerala Section SIGHT. All rights reserved.",
+    "privacyUrl": "https://www.ieee.org/privacy",
+    "termsUrl": "https://www.ieee.org/terms"
+  },
+  "metrics": [
+    { "label": "Projects Completed", "value": "15+" },
+    { "label": "Communities Reached", "value": "50+" },
+    { "label": "Volunteers", "value": "200+" },
+    { "label": "Lives Impacted", "value": "10,000+" }
+  ]
+}

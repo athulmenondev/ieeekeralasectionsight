@@ -1,0 +1,63 @@
+// Design System Colors
+$primary: #006699;
+$white: #FFFFFF;
+$surface: #F4F6F9;
+$text: #111827;
+$muted: #6B7280;
+
+// Glass Effect
+$glass-bg: rgba(255, 255, 255, 0.45);
+$glass-border: rgba(255, 255, 255, 0.2);
+$glass-blur: 16px;
+
+// Typography
+$font-family: 'Inter', system-ui, sans-serif;
+
+// Spacing
+$spacing-unit: 8px;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// Transitions
+$transition-default: 300ms ease;
+$transition-slow: 500ms ease;
+
+// Mixins
+@mixin glass-effect {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  border: 1px solid $glass-border;
+}
+
+@mixin focus-ring {
+  outline: 2px solid $primary;
+  outline-offset: 2px;
+}
+
+@mixin mobile-first {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
+
+@mixin large-desktop {
+  @media (min-width: $breakpoint-xl) {
+    @content;
+  }
+}

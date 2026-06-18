@@ -1,0 +1,360 @@
+@use 'variables' as *;
+
+// Glass Card Styles
+.glass-card {
+  @include glass-effect;
+  border-radius: 16px;
+  padding: calc($spacing-unit * 3);
+  transition: transform $transition-default, box-shadow $transition-default;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  &--flat {
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Section Header Styles
+.section-header {
+  text-align: center;
+  margin-bottom: calc($spacing-unit * 6);
+
+  &__title {
+    font-size: 40px;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: calc($spacing-unit * 2);
+  }
+
+  &__subtitle {
+    font-size: 18px;
+    color: $muted;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+// Button Base Styles
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc($spacing-unit);
+  padding: calc($spacing-unit * 1.5) calc($spacing-unit * 3);
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all $transition-default;
+  border: none;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &--primary {
+    background: $primary;
+    color: $white;
+
+    &:hover {
+      background: darken($primary, 10%);
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    color: $primary;
+    border: 2px solid $primary;
+
+    &:hover {
+      background: $primary;
+      color: $white;
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $text;
+
+    &:hover {
+      background: rgba($text, 0.1);
+    }
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+    }
+  }
+
+  &--full {
+    width: 100%;
+  }
+
+  &--sm {
+    padding: calc($spacing-unit) calc($spacing-unit * 2);
+    font-size: 14px;
+  }
+
+  &--lg {
+    padding: calc($spacing-unit * 2) calc($spacing-unit * 4);
+    font-size: 18px;
+  }
+}
+
+// Bento Grid Styles
+.bento-grid {
+  display: grid;
+  gap: calc($spacing-unit * 3);
+
+  @include mobile-first {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &__item {
+    @include glass-effect;
+    border-radius: 16px;
+    padding: calc($spacing-unit * 4);
+    background: $glass-bg;
+    will-change: transform;
+
+    &--featured {
+      @include desktop {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+    }
+
+    &--tall {
+      @include mobile-first {
+        grid-row: span 2;
+      }
+    }
+
+    &--wide {
+      @include mobile-first {
+        grid-column: span 2;
+      }
+    }
+  }
+}
+
+// Timeline Styles
+.timeline {
+  position: relative;
+  padding-left: calc($spacing-unit * 4);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba($primary, 0.2);
+  }
+
+  &__item {
+    position: relative;
+    padding-bottom: calc($spacing-unit * 4);
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * $spacing-unit * 4 + -5px);
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: $primary;
+      border: 3px solid $white;
+      box-shadow: 0 0 0 2px $primary;
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+
+  &__date {
+    font-size: 14px;
+    color: $muted;
+    margin-bottom: calc($spacing-unit);
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: calc($spacing-unit);
+  }
+
+  &__description {
+    font-size: 16px;
+    color: $muted;
+  }
+}
+
+// Project Card Styles
+.project-card {
+  @include glass-effect;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform $transition-default;
+
+  &:hover {
+    transform: translateY(-8px);
+  }
+
+  &__image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  &__content {
+    padding: calc($spacing-unit * 3);
+  }
+
+  &__category {
+    display: inline-block;
+    padding: calc($spacing-unit / 2) calc($spacing-unit);
+    background: rgba($primary, 0.1);
+    color: $primary;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 4px;
+    margin-bottom: calc($spacing-unit * 2);
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: calc($spacing-unit);
+  }
+
+  &__description {
+    font-size: 14px;
+    color: $muted;
+    margin-bottom: calc($spacing-unit * 2);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__location {
+    font-size: 12px;
+    color: $muted;
+  }
+
+  &__impact {
+    font-size: 12px;
+    color: $primary;
+    font-weight: 500;
+  }
+}
+
+// Team Card Styles
+.team-card {
+  @include glass-effect;
+  border-radius: 16px;
+  padding: calc($spacing-unit * 3);
+  text-align: center;
+  transition: transform $transition-default;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  &__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: calc($spacing-unit * 2);
+  }
+
+  &__name {
+    font-size: 18px;
+    font-weight: 600;
+    color: $text;
+    margin-bottom: calc($spacing-unit / 2);
+  }
+
+  &__role {
+    font-size: 14px;
+    color: $primary;
+    font-weight: 500;
+    margin-bottom: calc($spacing-unit);
+  }
+
+  &__bio {
+    font-size: 14px;
+    color: $muted;
+  }
+}
+
+// Form Styles
+.form {
+  &__group {
+    margin-bottom: calc($spacing-unit * 3);
+  }
+
+  &__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: $text;
+    margin-bottom: calc($spacing-unit);
+  }
+
+  &__input,
+  &__textarea,
+  &__select {
+    width: 100%;
+    padding: calc($spacing-unit * 1.5);
+    font-size: 16px;
+    border: 1px solid rgba($text, 0.2);
+    border-radius: 8px;
+    background: rgba($white, 0.8);
+    transition: border-color $transition-default, box-shadow $transition-default;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, 0.1);
+    }
+
+    &::placeholder {
+      color: $muted;
+    }
+  }
+
+  &__textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  &__error {
+    font-size: 12px;
+    color: #dc2626;
+    margin-top: calc($spacing-unit / 2);
+  }
+}

@@ -1,0 +1,80 @@
+[
+  {
+    "id": 1,
+    "title": "Solar Microgrid Initiative",
+    "category": "Renewable Energy",
+    "location": "Wayanad",
+    "image": "/images/projects/solar.jpg",
+    "description": "Community-owned solar infrastructure for remote settlements in the Western Ghats.",
+    "impact": "120 households benefited",
+    "featured": true,
+    "details": {
+      "duration": "8 months",
+      "status": "completed",
+      "partners": ["KSEB", "MNRE"],
+      "highlights": ["200kW capacity", "Grid-tied system", "Battery storage"]
+    }
+  },
+  {
+    "id": 2,
+    "title": "Smart Water Monitoring",
+    "category": "Water Sanitation",
+    "location": "Idukki",
+    "image": "/images/projects/water.jpg",
+    "description": "IoT-powered water quality monitoring system for tribal communities.",
+    "impact": "5 villages monitored",
+    "featured": true,
+    "details": {
+      "duration": "6 months",
+      "status": "ongoing",
+      "partners": ["PHE Department", "UNICEF"],
+      "highlights": ["Real-time monitoring", "SMS alerts", "Mobile app"]
+    }
+  },
+  {
+    "id": 3,
+    "title": "AgriTech Advisory Platform",
+    "category": "AgriTech",
+    "location": "Palakkad",
+    "image": "/images/projects/agri.jpg",
+    "description": "Technology support platform connecting farmers with agricultural experts.",
+    "impact": "200+ farmers reached",
+    "featured": false,
+    "details": {
+      "duration": "12 months",
+      "status": "ongoing",
+      "partners": ["KAU", "ICAR"],
+      "highlights": ["AI-powered advice", "Weather integration", "Market linkage"]
+    }
+  },
+  {
+    "id": 4,
+    "title": "E-Waste Collection Network",
+    "category": "Environment",
+    "location": "Kochi",
+    "image": "/images/projects/ewaste.jpg",
+    "description": "Structured e-waste collection and recycling awareness program.",
+    "impact": "3 tons collected",
+    "featured": false,
+    "details": {
+      "duration": "Ongoing",
+      "status": "ongoing",
+      "highlights": ["Collection centers", "Awareness drives", "Recycler partnerships"]
+    }
+  },
+  {
+    "id": 5,
+    "title": "Digital Literacy for Seniors",
+    "category": "Digital Inclusion",
+    "location": "Thiruvananthapuram",
+    "image": "/images/projects/digital.jpg",
+    "description": "Technology workshops helping senior citizens stay connected with family.",
+    "impact": "500+ seniors trained",
+    "featured": false,
+    "details": {
+      "duration": "4 months",
+      "status": "completed",
+      "highlights": ["Hands-on training", "Custom materials", "Follow-up support"]
+    }
+  }
+]

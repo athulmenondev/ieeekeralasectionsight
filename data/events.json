@@ -1,0 +1,66 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Sustainability Tech Workshop",
+      "date": "2024-07-15",
+      "time": "10:00 AM",
+      "location": "Trivandrum",
+      "description": "Hands-on workshop on building low-cost environmental sensors.",
+      "type": "workshop",
+      "registrationUrl": "https://forms.ieee.org/sustainability-workshop",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "Rural Connectivity Summit",
+      "date": "2024-08-20",
+      "time": "9:00 AM",
+      "location": "Kochi",
+      "description": "Annual summit discussing connectivity solutions for rural Kerala.",
+      "type": "meetup",
+      "registrationUrl": "https://forms.ieee.org/connectivity-summit",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "IoT for Good Webinar",
+      "date": "2024-09-10",
+      "time": "5:00 PM",
+      "location": "Online",
+      "description": "Webinar on applying IoT for humanitarian causes.",
+      "type": "webinar",
+      "registrationUrl": "https://forms.ieee.org/iot-webinar",
+      "featured": false
+    }
+  ],
+  "pastEvents": [
+    {
+      "id": 101,
+      "title": "Solar Cooking Demo Day",
+      "date": "2024-05-20",
+      "time": "11:00 AM",
+      "location": "Kollam",
+      "description": "Community demonstration of solar cooking solutions.",
+      "type": "meetup"
+    },
+    {
+      "id": 102,
+      "title": "Water Quality Hackathon",
+      "date": "2024-04-15",
+      "time": "9:00 AM",
+      "location": "Kochi",
+      "description": "48-hour hackathon to build water monitoring solutions.",
+      "type": "hackathon"
+    },
+    {
+      "id": 103,
+      "title": "Smart Village Initiative Launch",
+      "date": "2024-03-10",
+      "time": "10:00 AM",
+      "location": "Wayanad",
+      "description": "Launch of our flagship smart village project.",
+      "type": "meetup"
+    }
+  ]
+}
