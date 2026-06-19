@@ -1,36 +1,26 @@
-// Design System Colors
-$primary: #006699;
-$white: #FFFFFF;
-$surface: #F4F6F9;
-$text: #111827;
-$muted: #6B7280;
+$primary: #024ad8;
+$primary-soft: #c9e0fc;
+$ink: #1a1a1a;
+$canvas: #ffffff;
+$cloud: #f7f7f7;
+$charcoal: #3d3d3d;
+$graphite: #636363;
 
-// Glass Effect
-$glass-bg: rgba(255, 255, 255, 0.45);
-$glass-border: rgba(255, 255, 255, 0.2);
-$glass-blur: 16px;
-
-// Typography
 $font-family: 'Inter', system-ui, sans-serif;
-
-// Spacing
 $spacing-unit: 8px;
 
-// Breakpoints
 $breakpoint-sm: 640px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 1024px;
 $breakpoint-xl: 1280px;
 
-// Transitions
 $transition-default: 300ms ease;
 $transition-slow: 500ms ease;
 
-// Mixins
 @mixin glass-effect {
-  background: $glass-bg;
-  backdrop-filter: blur($glass-blur);
-  border: 1px solid $glass-border;
+  background: rgba($canvas, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba($charcoal, 0.1);
 }
 
 @mixin focus-ring {

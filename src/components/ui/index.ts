@@ -6,3 +6,6 @@ export { Timeline } from './Timeline';
 export { ProjectCard } from './ProjectCard';
 export { TeamCard } from './TeamCard';
 export { VolunteerForm } from './VolunteerForm';
+export { KeralaWave } from './KeralaWave';
+export { ThemeToggle } from './ThemeToggle';
+export { CountUp } from './CountUp';
