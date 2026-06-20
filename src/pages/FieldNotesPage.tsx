@@ -23,7 +23,11 @@ export function FieldNotesPage() {
     <main className="pt-20 bg-canvas text-text min-h-screen selection:bg-secondary/20">
       {/* Hero */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute top-[-10%] left-[20%] w-[45%] h-[45%] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
+        <motion.div
+          animate={{ y: [0, -18, 0], scale: [1, 1.05, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 1 }}
+          className="absolute top-[-10%] left-[20%] w-[45%] h-[45%] bg-secondary/5 rounded-full blur-[120px] pointer-events-none"
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

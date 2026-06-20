@@ -1,3 +1,6 @@
+import { motion } from 'framer-motion';
+import { useRef } from 'react';
+
 interface KeralaWaveProps {
   depth?: 'deep' | 'mid' | 'surface';
 }
@@ -22,18 +25,25 @@ const waves: Record<string, { d: string; className: string; opacity: string }> =
 
 export function KeralaWave({ depth = 'surface' }: KeralaWaveProps) {
   const cfg = waves[depth];
+  const ref = useRef<SVGSVGElement>(null);
+
   return (
     <svg
+      ref={ref}
       className={`absolute inset-0 w-full h-full ${cfg.className}`}
       viewBox="0 0 1440 320"
       preserveAspectRatio="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
+      <motion.path
         fill="currentColor"
         d={cfg.d}
         className="text-primary"
         opacity={cfg.opacity}
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
       />
     </svg>
   );

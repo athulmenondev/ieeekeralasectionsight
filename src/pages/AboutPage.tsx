@@ -8,7 +8,12 @@ export function AboutPage() {
   return (
     <main className="pt-20">
       {/* Hero */}
-      <section className="py-20 bg-canvas">
+      <section className="py-20 bg-canvas relative overflow-hidden">
+        <motion.div
+          animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute top-[-10%] right-[-5%] w-[35%] h-[35%] bg-primary/8 rounded-full blur-[120px] pointer-events-none"
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

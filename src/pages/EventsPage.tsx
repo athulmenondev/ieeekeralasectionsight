@@ -9,7 +9,11 @@ export function EventsPage() {
     <main className="pt-20 bg-canvas text-text selection:bg-primary/20">
       {/* Hero Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[140px] pointer-events-none" />
+        <motion.div
+          animate={{ y: [0, -20, 0], scale: [1, 1.06, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+          className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[140px] pointer-events-none"
+        />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

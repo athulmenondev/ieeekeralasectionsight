@@ -27,5 +27,17 @@ export function CountUp({ value }: CountUpProps) {
     }
   }, [isInView, rawNum, motionValue]);
 
-  return <span ref={ref}>{isInView ? <motion.span>{display}</motion.span> : '0'}</span>;
+  return (
+    <span ref={ref} className="relative inline-flex items-center justify-center">
+      {isInView && (
+        <motion.span
+          className="absolute inset-[-0.15em] rounded-full bg-primary/15 blur-md"
+          initial={{ opacity: 0, scale: 0.65 }}
+          animate={{ opacity: [0, 0.9, 0], scale: [0.65, 1.35, 1.7] }}
+          transition={{ duration: 0.9, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        />
+      )}
+      <span className="relative z-10">{isInView ? <motion.span>{display}</motion.span> : '0'}</span>
+    </span>
+  );
 }

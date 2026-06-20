@@ -8,7 +8,7 @@ export function ThemeToggle() {
     <motion.button
       onClick={toggleTheme}
       whileTap={{ scale: 0.95 }}
-      className="relative w-10 h-10 rounded-full border border-hairline flex items-center justify-center hover:bg-cloud transition-colors"
+      className="relative flex h-10 w-10 items-center justify-center rounded-full border border-hairline/80 bg-paper/60 text-text transition-colors hover:border-primary/30 hover:bg-cloud/70 dark:hover:bg-white/5"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
       <div className="relative w-5 h-5">
@@ -22,7 +22,7 @@ export function ThemeToggle() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="w-5 h-5 text-text"
+            className="w-5 h-5"
           >
             <circle cx="12" cy="12" r="5" />
             <line x1="12" y1="1" x2="12" y2="3" />
@@ -44,7 +44,7 @@ export function ThemeToggle() {
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className="w-5 h-5 text-text"
+            className="w-5 h-5"
           >
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
           </motion.svg>

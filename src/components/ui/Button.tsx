@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useCallback, type ReactNode, type HTMLAttributes, type MouseEvent } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { useState, useCallback, type ReactNode, type HTMLAttributes, type MouseEvent, useRef } from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ink' | 'ghost' | 'link';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -29,6 +29,12 @@ export function Button({
   ...attrs
 }: ButtonProps) {
   const [ripples, setRipples] = useState<Ripple[]>([]);
+  const ref = useRef<HTMLButtonElement>(null);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { damping: 15, stiffness: 200 });
+  const springY = useSpring(mouseY, { damping: 15, stiffness: 200 });
 
   const sizeClasses: Record<ButtonSize, string> = {
     sm: 'text-xs px-4 py-2 h-9 rounded-xl tracking-wider',
@@ -53,21 +59,53 @@ export function Button({
     setTimeout(() => setRipples((prev) => prev.filter((r) => r.id !== id)), 700);
   }, []);
 
+  const handlePointerMove = (e: MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    mouseX.set(x * 0.3);
+    mouseY.set(y * 0.3);
+  };
+
+  const handlePointerLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+
   return (
     <motion.button
+      ref={ref}
       whileTap={{ scale: 0.96 }}
-      whileHover={{ y: -1.5, shadow: '0 10px 20px rgba(2,74,216,0.15)' }}
+      whileHover={{ y: -1.5, boxShadow: '0 10px 20px rgba(2,74,216,0.15)' }}
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      style={{ x: springX, y: springY }}
+      onPointerMove={variant !== 'link' ? handlePointerMove : undefined}
+      onPointerLeave={variant !== 'link' ? handlePointerLeave : undefined}
       {...attrs}
       className={`
-        btn font-bold uppercase select-none relative z-10
+        btn group font-bold uppercase select-none relative z-10
         ${variantClasses[variant]}
         ${sizeClasses[size]}
         ${fullWidth ? 'w-full' : ''}
         ${className}
       `}
-      onClick={variant !== 'link' ? handleClick : undefined}
+      onClick={
+        variant !== 'link'
+          ? (e) => {
+              handleClick(e);
+              attrs.onClick?.(e);
+            }
+          : attrs.onClick
+      }
     >
+      {variant !== 'link' && (
+        <motion.span
+          className="absolute inset-y-[-35%] left-[-45%] z-0 w-1/3 rotate-12 bg-white/35 blur-sm transition-opacity duration-300 group-hover:opacity-100 dark:bg-white/25"
+          initial={{ x: '-140%', opacity: 0 }}
+          whileHover={{ x: '520%', opacity: 1 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+        />
+      )}
       <AnimatePresence>
         {ripples.map((r) => (
           <motion.span

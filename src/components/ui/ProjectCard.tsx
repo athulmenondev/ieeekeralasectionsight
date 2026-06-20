@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import type { MouseEvent } from 'react';
 import type { Project } from '../../types';
 
 interface ProjectCardProps {
@@ -17,6 +18,31 @@ export function ProjectCard({ project, className = '', span = 'default' }: Proje
   const status = project.details?.status || 'ongoing';
   const s = statusConfig[status];
   const isFeatured = span === 'featured';
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+  const spotlightX = useMotionValue(0);
+  const spotlightY = useMotionValue(0);
+  const smoothX = useSpring(pointerX, { stiffness: 220, damping: 24 });
+  const smoothY = useSpring(pointerY, { stiffness: 220, damping: 24 });
+  const rotateY = useTransform(smoothX, [-0.5, 0.5], [-5, 5]);
+  const rotateX = useTransform(smoothY, [-0.5, 0.5], [5, -5]);
+  const spotlight = useMotionTemplate`radial-gradient(420px circle at ${spotlightX}px ${spotlightY}px, rgba(41, 110, 249, 0.18), transparent 58%)`;
+
+  const handlePointerMove = (event: MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    spotlightX.set(x);
+    spotlightY.set(y);
+    pointerX.set(x / rect.width - 0.5);
+    pointerY.set(y / rect.height - 0.5);
+  };
+
+  const handlePointerLeave = () => {
+    pointerX.set(0);
+    pointerY.set(0);
+  };
 
   return (
     <motion.div
@@ -24,12 +50,19 @@ export function ProjectCard({ project, className = '', span = 'default' }: Proje
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-20px' }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      style={{ rotateX, rotateY, transformPerspective: 900 }}
       className={`glass-card group h-full flex flex-col justify-between relative overflow-hidden transition-all duration-400 ${
         isFeatured ? 'p-6 md:p-8' : 'p-5 md:p-6'
       } ${className}`}
     >
       {/* High-visibility internal tint path gradient as seen in image_2d5c3f.png and image_2d5c42.png */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 pointer-events-none opacity-70" />
+      <motion.div
+        className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{ background: spotlight }}
+      />
       <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="relative z-10 flex flex-col gap-4 flex-1">

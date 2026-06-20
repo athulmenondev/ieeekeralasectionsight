@@ -9,3 +9,5 @@ export { VolunteerForm } from './VolunteerForm';
 export { KeralaWave } from './KeralaWave';
 export { ThemeToggle } from './ThemeToggle';
 export { CountUp } from './CountUp';
+export { PageTransition } from './PageTransition';
+export { RevealWords } from './RevealWords';

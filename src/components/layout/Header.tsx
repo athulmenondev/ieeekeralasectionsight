@@ -16,11 +16,28 @@ const drawerVariants = {
   },
 };
 
+const drawerListVariants = {
+  closed: { transition: { staggerChildren: 0.04, staggerDirection: -1 } },
+  open: { transition: { staggerChildren: 0.07, delayChildren: 0.12 } },
+};
+
+const drawerLinkVariants = {
+  closed: { opacity: 0, x: 18, filter: 'blur(6px)' },
+  open: {
+    opacity: 1,
+    x: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoveredNavPath, setHoveredNavPath] = useState<string | null>(null);
   const location = useLocation();
   const siteConfig = getSiteConfig();
+  const pillPath = hoveredNavPath ?? location.pathname;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -38,10 +55,10 @@ export function Header() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`mx-auto max-w-7xl rounded-full border transition-all duration-500 ${
+        className={`mx-auto max-w-7xl rounded-full border border-hairline/70 bg-paper/90 text-text backdrop-blur-2xl transition-all duration-500 dark:border-hairline/80 ${
           isScrolled
-            ? 'bg-paper/85 backdrop-blur-2xl border-hairline/60 shadow-md shadow-black/[0.04] dark:shadow-black/[0.25]'
-            : 'bg-paper/55 backdrop-blur-xl border-white/30 dark:border-white/5'
+            ? 'shadow-lg shadow-ink/[0.08] dark:shadow-black/30'
+            : 'shadow-sm shadow-ink/[0.04] dark:shadow-black/20'
         }`}
       >
         <div className="flex items-center justify-between h-14 md:h-16 px-4 sm:px-5 md:px-6 lg:px-8">
@@ -56,20 +73,31 @@ export function Header() {
           </Link>
 
           {/* Center Links (Desktop only) */}
-          <div className="hidden md:flex items-center gap-1">
-            {siteConfig.nav.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-all duration-200 ${
-                  location.pathname === item.path
-                    ? 'text-primary bg-primary/10 border border-primary/20'
-                    : 'text-charcoal hover:text-text hover:bg-cloud/60'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-1" onMouseLeave={() => setHoveredNavPath(null)}>
+            {siteConfig.nav.map((item) => {
+              const isActive = location.pathname === item.path;
+              const isHighlighted = pillPath === item.path;
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onMouseEnter={() => setHoveredNavPath(item.path)}
+                  className={`relative isolate overflow-hidden px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full transition-colors duration-200 ${
+                    isActive || isHighlighted ? 'text-primary' : 'text-muted hover:text-text'
+                  }`}
+                >
+                  {isHighlighted && (
+                    <motion.span
+                      layoutId="navbar-active-pill"
+                      className="absolute inset-0 -z-10 rounded-full border border-primary/25 bg-primary/10 shadow-sm shadow-primary/10"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.label}</span>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Actions Menu Group (Edge Padding Adjusted) */}
@@ -87,13 +115,28 @@ export function Header() {
 
             {/* Mobile Hamburger Anchor Switch */}
             <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 rounded-xl hover:bg-cloud/60 active:scale-95 transition-all"
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              className="md:hidden rounded-xl p-2 text-text transition-all hover:bg-cloud/70 active:scale-95 dark:hover:bg-white/5"
               aria-label="Open menu"
+              aria-expanded={isMobileMenuOpen}
             >
-              <svg className="w-5 h-5 text-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <span className="relative block h-5 w-5">
+                <motion.span
+                  className="absolute left-0 top-[4px] h-0.5 w-5 rounded-full bg-current"
+                  animate={isMobileMenuOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+                />
+                <motion.span
+                  className="absolute left-0 top-[10px] h-0.5 w-5 rounded-full bg-current"
+                  animate={isMobileMenuOpen ? { opacity: 0, x: 8 } : { opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2 }}
+                />
+                <motion.span
+                  className="absolute left-0 top-[16px] h-0.5 w-5 rounded-full bg-current"
+                  animate={isMobileMenuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+                  transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -107,7 +150,7 @@ export function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-ink/40 backdrop-blur-md z-40 md:hidden"
+              className="fixed inset-0 z-40 bg-ink/45 backdrop-blur-md md:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <motion.div
@@ -115,7 +158,7 @@ export function Header() {
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] z-50 bg-paper/90 dark:bg-card-dark/90 backdrop-blur-2xl border-l border-hairline/20 shadow-2xl md:hidden flex flex-col"
+              className="fixed top-0 right-0 bottom-0 z-50 flex w-80 max-w-[85vw] flex-col border-l border-hairline/70 bg-paper/95 text-text shadow-2xl backdrop-blur-2xl md:hidden dark:border-hairline/80"
             >
               <div className="flex items-center justify-between p-5 border-b border-hairline/20">
                 <div className="flex items-center gap-2.5">
@@ -126,30 +169,32 @@ export function Header() {
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 rounded-xl hover:bg-cloud/60 transition-all active:scale-95"
+                  className="rounded-xl p-2 text-text transition-all hover:bg-cloud/70 active:scale-95 dark:hover:bg-white/5"
                   aria-label="Close menu"
                 >
-                  <svg className="w-5 h-5 text-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
               
-              <div className="flex-1 p-5 space-y-1.5">
+              <motion.div variants={drawerListVariants} initial="closed" animate="open" exit="closed" className="flex-1 p-5 space-y-1.5">
                 {siteConfig.nav.map((item) => (
+                  <motion.div key={item.path} variants={drawerLinkVariants}>
                   <Link
                     key={item.path}
                     to={item.path}
                     className={`block px-4 py-3 text-sm font-bold uppercase tracking-wider rounded-xl transition-all ${
                       location.pathname === item.path
-                        ? 'text-primary bg-primary/10 border border-primary/20'
-                        : 'text-charcoal hover:text-text hover:bg-cloud/60'
+                        ? 'border border-primary/25 bg-primary/10 text-primary shadow-sm shadow-primary/10'
+                        : 'text-muted hover:bg-cloud/70 hover:text-text dark:hover:bg-white/5'
                     }`}
                   >
                     {item.label}
                   </Link>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
               
               <div className="p-5 border-t border-hairline/20">
                 <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>

@@ -24,8 +24,16 @@ export function ProjectsPage() {
     <main className="min-h-screen flex flex-col pt-20 md:pt-24 bg-canvas text-text selection:bg-primary/30">
       {/* Hero Section */}
       <section className="py-16 md:py-24 relative overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[35%] h-[35%] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
+        <motion.div
+          animate={{ y: [0, -20, 0], scale: [1, 1.06, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, 18, 0], scale: [1, 1.04, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 1.5 }}
+          className="absolute bottom-[10%] right-[-10%] w-[35%] h-[35%] bg-secondary/5 rounded-full blur-[100px] pointer-events-none"
+        />
         
         <div className="container-site relative z-10">
           <motion.div
@@ -114,9 +122,11 @@ export function ProjectsPage() {
                 return (
                   <motion.div
                     key={project.id}
+                    layout
                     className={`${gridClasses} group relative flex flex-col justify-between overflow-hidden rounded-[24px] transition-all duration-300`}
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.5, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {isFeatured ? (

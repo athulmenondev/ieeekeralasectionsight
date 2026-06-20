@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, ProjectCard, VolunteerForm, KeralaWave, CountUp } from '../components/ui';
+import { Button, ProjectCard, VolunteerForm, KeralaWave, CountUp, RevealWords } from '../components/ui';
 import { BentoGrid, BentoItem } from '../components/ui/BentoGrid';
 import { getSiteConfig, getProjectsData } from '../data';
 
@@ -22,6 +22,25 @@ const containerVariants = {
   },
 };
 
+const sectionHeaderVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.08 },
+  },
+};
+
+const sectionHeaderItemVariants = {
+  hidden: { opacity: 0, y: 16, filter: 'blur(8px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
 export function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: pageProgress } = useScroll();
@@ -30,15 +49,21 @@ export function HomePage() {
     offset: ['start start', 'end start'],
   });
 
-  const heroY = useTransform(heroProgress, [0, 1], ['0%', '20%']);
+  const heroY = useTransform(heroProgress, [0, 1], ['0%', '42%']);
   const heroOpacity = useTransform(heroProgress, [0, 0.6], [1, 0]);
+  const heroScale = useTransform(heroProgress, [0, 0.8], [1, 0.92]);
+  const meshOneY = useTransform(heroProgress, [0, 1], ['0%', '64%']);
+  const meshTwoY = useTransform(heroProgress, [0, 1], ['0%', '-48%']);
+  const deepWaveY = useTransform(heroProgress, [0, 1], ['0%', '18%']);
+  const midWaveY = useTransform(heroProgress, [0, 1], ['0%', '32%']);
+  const surfaceWaveY = useTransform(heroProgress, [0, 1], ['0%', '48%']);
 
   const siteConfig = getSiteConfig();
   const { projects } = getProjectsData();
   const projectsList = projects.slice(0, 5);
 
   return (
-    <main className="min-h-screen flex flex-col bg-canvas text-text overflow-hidden selection:bg-primary/20">
+    <main className="min-h-screen flex flex-col bg-canvas text-text selection:bg-primary/20">
       {/* Premium Thin Fluid Progress Tracking Bar */}
       <motion.div
         className="progress-bar !h-[2px] bg-gradient-to-r from-primary via-primary-bright to-secondary"
@@ -52,15 +77,31 @@ export function HomePage() {
         className="relative min-h-screen flex items-center justify-center overflow-hidden bg-canvas"
       >
         {/* Layered fluid mesh glows sitting beneath waves */}
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-[5%] right-[-10%] w-[45%] h-[45%] bg-secondary/5 rounded-full blur-[120px] pointer-events-none" />
+        <motion.div
+          style={{ y: meshOneY }}
+          animate={{ x: [0, 18, -12, 8, 0], scale: [1, 1.08, 0.96, 1.04, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[140px] pointer-events-none"
+        />
+        <motion.div
+          style={{ y: meshTwoY }}
+          animate={{ x: [0, -16, 10, -8, 0], scale: [1, 1.06, 0.98, 1.03, 1] }}
+          transition={{ duration: 14, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 2 }}
+          className="absolute bottom-[5%] right-[-10%] w-[45%] h-[45%] bg-secondary/5 rounded-full blur-[120px] pointer-events-none"
+        />
 
-        <KeralaWave depth="deep" />
-        <KeralaWave depth="mid" />
-        <KeralaWave depth="surface" />
+        <motion.div style={{ y: deepWaveY }} className="absolute inset-0 pointer-events-none">
+          <KeralaWave depth="deep" />
+        </motion.div>
+        <motion.div style={{ y: midWaveY }} className="absolute inset-0 pointer-events-none">
+          <KeralaWave depth="mid" />
+        </motion.div>
+        <motion.div style={{ y: surfaceWaveY }} className="absolute inset-0 pointer-events-none">
+          <KeralaWave depth="surface" />
+        </motion.div>
 
         <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
+          style={{ y: heroY, opacity: heroOpacity, scale: heroScale }}
           className="relative z-20 w-full max-w-5xl mx-auto px-4 md:px-12 text-center"
         >
           <motion.div
@@ -76,14 +117,12 @@ export function HomePage() {
               Advancing Technology for Humanity
             </motion.span>
 
-            <motion.h1
-              variants={itemVariants}
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-[85px] font-black text-text leading-[1.02] tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-text via-text to-charcoal"
-            >
-              Humanitarian
-              <br />
-              Technology
-            </motion.h1>
+            <RevealWords
+              as="h1"
+              text="Humanitarian Technology"
+              className="mb-6 w-full text-center text-5xl font-black leading-[1.02] tracking-tight text-text sm:text-6xl md:text-7xl lg:text-[85px]"
+              wordClassName="bg-gradient-to-b from-text via-text to-charcoal bg-clip-text text-transparent"
+            />
 
             <motion.p
               variants={itemVariants}
@@ -127,16 +166,21 @@ export function HomePage() {
 
       {/* ── Impact Section ── */}
       <section className="relative py-24 md:py-32 bg-cloud/30 border-t border-b border-hairline/20">
-        <div className="absolute top-[30%] right-[5%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
+        <motion.div
+          animate={{ y: [0, -16, 0], scale: [1, 1.05, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 2 }}
+          className="absolute top-[30%] right-[5%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"
+        />
         <div className="container-site relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={sectionHeaderVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-4">Our Impact</h2>
-            <p className="text-sm md:text-base text-charcoal max-w-2xl mx-auto font-medium">Tangible blueprints where targeted engineering answers localized needs.</p>
+            <motion.h2 variants={sectionHeaderItemVariants} className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-4">Our Impact</motion.h2>
+            <motion.p variants={sectionHeaderItemVariants} className="text-sm md:text-base text-charcoal max-w-2xl mx-auto font-medium">Tangible blueprints where targeted engineering answers localized needs.</motion.p>
           </motion.div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -162,26 +206,37 @@ export function HomePage() {
       {/* ── Featured Projects Section ── */}
       <section className="relative py-24 md:py-32 bg-canvas">
         {/* Anchor mesh lights behind bento matrix items */}
-        <div className="absolute top-[40%] left-[10%] w-[350px] h-[350px] bg-primary/10 rounded-full blur-[110px] pointer-events-none" />
-        <div className="absolute bottom-[10%] right-[5%] w-[250px] h-[250px] bg-secondary/5 rounded-full blur-[90px] pointer-events-none" />
+        <motion.div
+          animate={{ y: [0, -20, 0], scale: [1, 1.07, 1] }}
+          transition={{ duration: 11, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 1 }}
+          className="absolute top-[40%] left-[10%] w-[350px] h-[350px] bg-primary/10 rounded-full blur-[110px] pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, 16, 0], scale: [1, 1.05, 1] }}
+          transition={{ duration: 9, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 3 }}
+          className="absolute bottom-[10%] right-[5%] w-[250px] h-[250px] bg-secondary/5 rounded-full blur-[90px] pointer-events-none"
+        />
 
         <div className="container-site relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={sectionHeaderVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
             className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12"
           >
             <div>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-3">Featured Core Projects</h2>
-              <p className="text-sm md:text-base text-charcoal max-w-xl font-medium">Technological solutions mapped dynamically to underserved communities.</p>
+              <motion.h2 variants={sectionHeaderItemVariants} className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-3">Featured Core Projects</motion.h2>
+              <motion.p variants={sectionHeaderItemVariants} className="text-sm md:text-base text-charcoal max-w-xl font-medium">Technological solutions mapped dynamically to underserved communities.</motion.p>
             </div>
+            <motion.div variants={sectionHeaderItemVariants}>
             <Link
               to="/projects"
               className="hidden md:inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary hover:text-primary-bright transition-colors"
             >
               View All Projects →
             </Link>
+            </motion.div>
           </motion.div>
 
           <BentoGrid>
@@ -207,12 +262,12 @@ export function HomePage() {
       <section className="relative py-24 md:py-32 bg-cloud/30 border-t border-b border-hairline/20">
         <div className="container-site relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
-            <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="lg:col-span-2">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-4">Be the change</h2>
-              <p className="text-base text-primary dark:text-primary-bright font-bold uppercase tracking-wide mb-4">Your Engineering Skills Can Save Lives</p>
-              <p className="text-xs md:text-sm text-charcoal dark:text-dark-foreground leading-relaxed mb-8">
+            <motion.div variants={sectionHeaderVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-2">
+              <motion.h2 variants={sectionHeaderItemVariants} className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-4">Be the change</motion.h2>
+              <motion.p variants={sectionHeaderItemVariants} className="text-base text-primary dark:text-primary-bright font-bold uppercase tracking-wide mb-4">Your Engineering Skills Can Save Lives</motion.p>
+              <motion.p variants={sectionHeaderItemVariants} className="text-xs md:text-sm text-charcoal dark:text-dark-foreground leading-relaxed mb-8">
                 We look for passionate engineers, user-focused designers, and students who believe technology should function as an engine for social equity. Join an ecosystem of Kerala's brightest humanitarian minds.
-              </p>
+              </motion.p>
 
               <div className="space-y-4">
                 {[
@@ -241,11 +296,11 @@ export function HomePage() {
       <section className="relative py-24 md:py-32 bg-canvas">
         <div className="container-site relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
-            <motion.div initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="lg:col-span-2 pt-4">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-4">Get in Touch</h2>
-              <p className="text-sm text-charcoal dark:text-dark-foreground leading-relaxed mb-8">
+            <motion.div variants={sectionHeaderVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-2 pt-4">
+              <motion.h2 variants={sectionHeaderItemVariants} className="text-3xl md:text-4xl lg:text-5xl font-black text-text tracking-tight mb-4">Get in Touch</motion.h2>
+              <motion.p variants={sectionHeaderItemVariants} className="text-sm text-charcoal dark:text-dark-foreground leading-relaxed mb-8">
                 Interested in collaborating on technical pilots, tracking ecosystem telemetry, or initiating partnerships? Signal our channels below.
-              </p>
+              </motion.p>
 
               <div className="flex flex-wrap gap-2">
                 {['Partner Pass', 'Media Sync', 'Technical Support', 'Grants Matrix'].map((topic) => (
