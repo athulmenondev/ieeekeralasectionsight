@@ -57,7 +57,15 @@ export function FieldNotesPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-5">
                 <div className="lg:col-span-2 aspect-[16/9] lg:aspect-auto bg-gradient-to-br from-primary/20 via-primary-soft/10 to-transparent flex items-center justify-center border-b lg:border-b-0 lg:border-r border-hairline/30 relative overflow-hidden">
-                  <span className="text-5xl group-hover:scale-110 transition-transform duration-500 z-10 filter drop-shadow-md">📖</span>
+                  <span className="text-5xl group-hover:scale-110 transition-transform duration-500 z-10 filter drop-shadow-md">
+                    <motion.span
+                      animate={{ y: [0, -8, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                      className="inline-block"
+                    >
+                      📖
+                    </motion.span>
+                  </span>
                   <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="p-8 lg:col-span-3 flex flex-col justify-between">
@@ -118,9 +126,14 @@ export function FieldNotesPage() {
                 <div>
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {note.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 bg-white/60 dark:bg-black/20 text-charcoal border border-hairline/30 text-[10px] font-medium rounded">
+                      <motion.span
+                        key={tag}
+                        whileHover={{ scale: 1.06, y: -1 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                        className="px-2 py-0.5 bg-white/60 dark:bg-black/20 text-charcoal border border-hairline/30 text-[10px] font-medium rounded inline-block"
+                      >
                         #{tag}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                   <div className="flex items-center gap-2 text-[11px] font-semibold text-graphite border-t border-hairline/20 pt-3">

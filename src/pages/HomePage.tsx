@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, useMotionTemplate } from 'framer-motion';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, ProjectCard, VolunteerForm, KeralaWave, CountUp, RevealWords } from '../components/ui';
 import { BentoGrid, BentoItem } from '../components/ui/BentoGrid';
@@ -43,6 +43,10 @@ const sectionHeaderItemVariants = {
 
 export function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const impactRef = useRef<HTMLElement>(null);
+  const projectsRef = useRef<HTMLElement>(null);
+  const volunteerRef = useRef<HTMLElement>(null);
+  const contactRef = useRef<HTMLElement>(null);
   const { scrollYProgress: pageProgress } = useScroll();
   const { scrollYProgress: heroProgress } = useScroll({
     target: heroRef,
@@ -58,6 +62,10 @@ export function HomePage() {
   const midWaveY = useTransform(heroProgress, [0, 1], ['0%', '32%']);
   const surfaceWaveY = useTransform(heroProgress, [0, 1], ['0%', '48%']);
 
+  const progressHue = useTransform(pageProgress, [0, 0.2, 0.45, 0.65, 0.85, 1], [220, 190, 160, 130, 190, 220]);
+  const progressBrightness = useTransform(pageProgress, [0, 0.5, 1], [1.2, 1.4, 1.2]);
+  const progressBackground = useMotionTemplate`linear-gradient(to right, hsl(${progressHue}, 90%, 42%), hsl(${useTransform(progressHue, v => v + 30)}, 85%, 48%), hsl(${useTransform(progressHue, v => v + 60)}, 80%, 38%))`;
+
   const siteConfig = getSiteConfig();
   const { projects } = getProjectsData();
   const projectsList = projects.slice(0, 5);
@@ -66,8 +74,8 @@ export function HomePage() {
     <main className="min-h-screen flex flex-col bg-canvas text-text selection:bg-primary/20">
       {/* Premium Thin Fluid Progress Tracking Bar */}
       <motion.div
-        className="progress-bar !h-[2px] bg-gradient-to-r from-primary via-primary-bright to-secondary"
-        style={{ scaleX: pageProgress }}
+        className="progress-bar !h-[2px]"
+        style={{ scaleX: pageProgress, backgroundImage: progressBackground }}
       />
 
       {/* ── Hero ── */}
@@ -165,7 +173,7 @@ export function HomePage() {
       </section>
 
       {/* ── Impact Section ── */}
-      <section className="relative py-24 md:py-32 bg-cloud/30 border-t border-b border-hairline/20">
+      <section ref={impactRef} className="relative py-24 md:py-32 bg-cloud/30 border-t border-b border-hairline/20">
         <motion.div
           animate={{ y: [0, -16, 0], scale: [1, 1.05, 1] }}
           transition={{ duration: 9, repeat: Infinity, ease: [0.16, 1, 0.3, 1], delay: 2 }}
@@ -204,7 +212,7 @@ export function HomePage() {
       </section>
 
       {/* ── Featured Projects Section ── */}
-      <section className="relative py-24 md:py-32 bg-canvas">
+      <section ref={projectsRef} className="relative py-24 md:py-32 bg-canvas">
         {/* Anchor mesh lights behind bento matrix items */}
         <motion.div
           animate={{ y: [0, -20, 0], scale: [1, 1.07, 1] }}
@@ -259,7 +267,7 @@ export function HomePage() {
       </section>
 
       {/* ── Volunteer Panel Section ── */}
-      <section className="relative py-24 md:py-32 bg-cloud/30 border-t border-b border-hairline/20">
+      <section ref={volunteerRef} className="relative py-24 md:py-32 bg-cloud/30 border-t border-b border-hairline/20">
         <div className="container-site relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center">
             <motion.div variants={sectionHeaderVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-2">
@@ -293,7 +301,7 @@ export function HomePage() {
       </section>
 
       {/* ── Contact Section ── */}
-      <section className="relative py-24 md:py-32 bg-canvas">
+      <section ref={contactRef} className="relative py-24 md:py-32 bg-canvas">
         <div className="container-site relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-start">
             <motion.div variants={sectionHeaderVariants} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }} className="lg:col-span-2 pt-4">
@@ -304,9 +312,15 @@ export function HomePage() {
 
               <div className="flex flex-wrap gap-2">
                 {['Partner Pass', 'Media Sync', 'Technical Support', 'Grants Matrix'].map((topic) => (
-                  <span key={topic} className="px-3 py-1 text-xs font-semibold rounded-full bg-white/50 dark:bg-black/25 border border-hairline/40 text-charcoal">
+                  <motion.span
+                    key={topic}
+                    whileHover={{ scale: 1.06, y: -1 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                    className="px-3 py-1 text-xs font-semibold rounded-full bg-white/50 dark:bg-black/25 border border-hairline/40 text-charcoal cursor-default"
+                  >
                     {topic}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             </motion.div>
@@ -322,38 +336,57 @@ export function HomePage() {
 }
 
 function ContactForm() {
+  const [focusedField, setFocusedField] = useState<string | null>(null);
   return (
     <form onSubmit={(e) => e.preventDefault()} className="glass-card p-6 md:p-8 flex flex-col gap-5 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
       
       <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
+        <motion.div
+          animate={focusedField === 'name' ? { scale: 1.005, boxShadow: '0 0 0 3px rgba(2,74,216,0.12)' } : { scale: 1, boxShadow: '0 0 0 0px rgba(2,74,216,0)' }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-xl"
+        >
           <label htmlFor="name" className="block text-xs font-bold uppercase tracking-wider text-text mb-2">Full Name</label>
           <input
             type="text"
             id="name"
             required
+            onFocus={() => setFocusedField('name')}
+            onBlur={() => setFocusedField(null)}
             className="w-full px-4 py-3 bg-white/50 dark:bg-black/30 border border-hairline/40 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none text-text text-xs transition-all"
             placeholder="Identity Profile"
           />
-        </div>
-        <div>
+        </motion.div>
+        <motion.div
+          animate={focusedField === 'email' ? { scale: 1.005, boxShadow: '0 0 0 3px rgba(2,74,216,0.12)' } : { scale: 1, boxShadow: '0 0 0 0px rgba(2,74,216,0)' }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-xl"
+        >
           <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-text mb-2">Email Address</label>
           <input
             type="email"
             id="email"
             required
+            onFocus={() => setFocusedField('email')}
+            onBlur={() => setFocusedField(null)}
             className="w-full px-4 py-3 bg-white/50 dark:bg-black/30 border border-hairline/40 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none text-text text-xs transition-all"
             placeholder="routing@domain.com"
           />
-        </div>
+        </motion.div>
       </div>
 
-      <div className="relative z-10">
+      <motion.div
+        animate={focusedField === 'inquiry' ? { scale: 1.005, boxShadow: '0 0 0 3px rgba(2,74,216,0.12)' } : { scale: 1, boxShadow: '0 0 0 0px rgba(2,74,216,0)' }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 rounded-xl"
+      >
         <label htmlFor="inquiry" className="block text-xs font-bold uppercase tracking-wider text-text mb-2">Inquiry Intent Matrix</label>
         <select
           id="inquiry"
           required
+          onFocus={() => setFocusedField('inquiry')}
+          onBlur={() => setFocusedField(null)}
           className="w-full px-4 py-3 bg-white/50 dark:bg-black/30 border border-hairline/40 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none text-text text-xs transition-all appearance-none"
         >
           <option value="" className="dark:bg-card-dark">Select Intent</option>
@@ -361,18 +394,24 @@ function ContactForm() {
           <option value="collaboration" className="dark:bg-card-dark">Project Co-Deployment</option>
           <option value="general" className="dark:bg-card-dark">General Scope Query</option>
         </select>
-      </div>
+      </motion.div>
 
-      <div className="relative z-10">
+      <motion.div
+        animate={focusedField === 'message' ? { scale: 1.005, boxShadow: '0 0 0 3px rgba(2,74,216,0.12)' } : { scale: 1, boxShadow: '0 0 0 0px rgba(2,74,216,0)' }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 rounded-xl"
+      >
         <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-text mb-2">Message Specification</label>
         <textarea
           id="message"
           required
           rows={4}
+          onFocus={() => setFocusedField('message')}
+          onBlur={() => setFocusedField(null)}
           className="w-full px-4 py-3 bg-white/50 dark:bg-black/30 border border-hairline/40 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none text-text text-xs transition-all resize-none"
           placeholder="Append core log parameters..."
         />
-      </div>
+      </motion.div>
 
       <Button type="submit" fullWidth className="!rounded-xl shadow-lg mt-2 shadow-primary/10 tracking-widest text-xs uppercase font-extrabold">
         Dispatch Message Pass
